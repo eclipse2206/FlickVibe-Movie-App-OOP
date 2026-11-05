@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlickVibe - Search & Suggest</title>
+    
+    <!-- LINK TO YOUR CSS FILE -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Flick<span>Vibe</span></div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Search & Suggest</a>
+            <a href="watchlist.html">Watchlist & Calculations</a>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <h1>Find Your Next Obsession!</h1>
+        <p>Search millions of movies, get custom recommendations, and build your watchlist.</p>
+        
+        <div class="search-container">
+            <input type="text" id="movieSearch" placeholder="Search for a movie (e.g., Batman)...">
+            <select id="genreSelect">
+                <option value="">All Genres</option>
+                <option value="Action">Action</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Drama">Drama</option>
+                <option value="Horror">Horror</option>
+                <option value="Sci-Fi">Sci-Fi</option>
+            </select>
+            <button id="searchBtn" class="btn-primary">Search Movies</button>
+        </div>
+        <div id="errorMsg" style="color: #ff3333; margin-top: 15px; font-weight: bold;"></div>
+    </header>
+
+    <div class="suggestion-banner">
+        <h3>Custom Movie Recommendation</h3>
+        <p id="suggestionText">Search for a movie and select your preferred genre to generate a custom recommendation using control statements.</p>
+    </div>
+
+    <main>
+        <div id="movieResults" class="movie-grid"></div>
+    </main>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

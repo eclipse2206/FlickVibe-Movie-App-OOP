@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FlickVibe - Watchlist</title>
+    
+    <!-- FontAwesome for the Edit and Trash icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- FORCING THE CSS TO WORK -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        :root { --bg-deep: #0d0511; --bg-card: #1a0b22; --accent-red: #ff3333; --text-main: #ffffff; --text-muted: #b39cba; }
+        body { background-color: var(--bg-deep); color: var(--text-main); min-height: 100vh; }
+        
+        /* Navbar */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 50px; background: rgba(13, 5, 17, 0.9); border-bottom: 1px solid rgba(255, 51, 51, 0.2); }
+        .logo { font-size: 28px; font-weight: 900; }
+        .logo span { color: var(--accent-red); }
+        .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-weight: 600; font-size: 15px; }
+        .nav-links a.active { color: var(--accent-red); }
+        
+        /* Form Container */
+        .watchlist-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .watchlist-container h2 { font-size: 32px; margin-bottom: 20px; }
+        
+        .add-movie-form { background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid rgba(255, 51, 51, 0.2); margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .add-movie-form h3 { margin-bottom: 20px; font-size: 20px; color: var(--accent-red); }
+        
+        /* Grid for Inputs */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        
+        /* Inputs */
+        .form-grid input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white; font-size: 15px; outline: none; transition: all 0.3s ease; }
+        .form-grid input:focus { border-color: var(--accent-red); box-shadow: 0 0 10px rgba(255, 51, 51, 0.3); }
+        .form-grid input::placeholder { color: var(--text-muted); }
+        
+        /* Buttons */
+        .btn-primary { background: var(--accent-red); color: white; border: none; padding: 15px 30px; border-radius: 40px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255, 51, 51, 0.4); }
+        .btn-primary:hover { background: #e60000; box-shadow: 0 0 25px rgba(255, 51, 51, 0.7); transform: translateY(-2px); }
+
+        /* --- NEW: HORIZONTAL LIST LAYOUT FOR SAVED MOVIES --- */
+        #savedMoviesList {
+            display: flex;
+            flex-direction: column; /* Stack them vertically */
+            gap: 15px; 
+            padding: 0;
+        }
+
+        .movie-card {
+            display: flex;
+            flex-direction: row; /* Horizontal layout */
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 51, 51, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .movie-card:hover {
+            transform: translateX(5px); /* Slide right effect on hover */
+            border-color: rgba(255, 51, 51, 0.5);
+            background: #22102e; 
+        }
+
+        /* Group title and details together */
+        .movie-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .movie-info { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0; }
+        .movie-info h3 { font-size: 20px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* Style the rating, genre, and runtime text */
+        .movie-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Put the buttons next to each other on the right side */
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .text-yellow { color: #f5c518; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Flick<span>Vibe</span></div>
+        <div class="nav-links">
+            <a href="index.html">Search & Suggest</a>
+            <a href="watchlist.html" class="active">Watchlist & Calculations</a>
+        </div>
+    </nav>
+
+    <main class="watchlist-container">
+        <h2>Your Watchlist</h2>
+        
+        <div class="add-movie-form">
+            <h3>Add Movie Record</h3>
+                    <!-- Add this right after the </div> of the .add-movie-form -->
+        <div id="calculation-stats" style="background: #1a0b22; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--accent-red); display: flex; gap: 40px;">
+            <div>
+                <h3 style="color: var(--text-muted); font-size: 14px; text-transform: uppercase;">Total Watch Time</h3>
+                <p id="totalTimeDisplay" style="font-size: 24px; font-weight: bold; color: #fff;">0 hours</p>
+            </div>
+            <div>
+                <h3 style="color: var(--text-muted); font-size: 14px; text-transform: uppercase;">Average Rating</h3>
+                <p id="avgRatingDisplay" style="font-size: 24px; font-weight: bold; color: #f5c518;">0.0 / 10</p>
+            </div>
+        </div>
+            <div class="form-grid">
+                <input type="text" id="wTitle" placeholder="Movie Title">
+                <input type="text" id="wGenre" placeholder="Genre (e.g., Action, Drama)">
+                <input type="number" id="wRuntime" placeholder="Runtime in minutes (e.g., 120)">
+                <input type="number" id="wRating" step="0.1" placeholder="IMDb Rating (0 to 10)">
+            </div>
+            <button id="saveMovieBtn" class="btn-primary">Save Movie Record</button>
+        </div>
+
+        <div id="savedMoviesList">
+            <!-- JS will inject saved movies here -->
+        </div>
+    </main>
+
+    <!-- LINK TO WATCHLIST JS -->
+    <script src="watchlist.js"></script>
+</body>
+</html>
